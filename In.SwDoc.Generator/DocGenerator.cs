@@ -64,6 +64,7 @@ namespace In.SwDoc.Generator
                 pdf.CopyTo(memory);
             }
             File.Delete(pdfPath);
+            memory.Position = 0;
             return memory;
         }
 

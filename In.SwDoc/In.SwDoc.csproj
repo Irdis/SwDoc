@@ -26,7 +26,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\home\generation-result.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\In.SwDoc.Generator\In.SwDoc.Generator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\home\generation-result.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

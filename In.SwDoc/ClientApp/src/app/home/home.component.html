@@ -2,13 +2,14 @@
 
 <p>This site generates pdf documentation from a swagger json specification.</p>
 <h2>Generate using url</h2>
-<p>Paste url <i>(example: https://petstore.swagger.io/v2/swagger.json) </i></p>
-<form>
-  <div>
-    <label for="url">
-      Url
-    </label>
-    <input id="name" type="text">
+<p>Paste url:</p>
+<form [formGroup]="urlForm" (ngSubmit)="onSubmit()">
+  <div class="input-group">
+    <input type="text" name="url" class="form-control" placeholder="https://petstore.swagger.io/v2/swagger.json" aria-label="Url" formControlName="url">
+    <div class="input-group-append">
+      <input class="btn btn-outline-secondary" type="submit" value="Generate"/>
+    </div>
   </div>
-  <button class="button" type="submit">Generate</button>
 </form>
+<div *ngIf="urlDocInProgress">Generating...</div>
+<a *ngIf="urlDocId" href="api/sw-generator/document/{{urlDocId}}" download>Download</a>
