@@ -14,7 +14,7 @@
 <div *ngIf="urlDocInProgress">Generating...</div>
 <a *ngIf="urlDocId" href="api/sw-generator/document/{{urlDocId}}" download>Download</a>
 
-<h2>Generate using specification</h2>
+<h2>Generate using json</h2>
 <p>Paste specification json:</p>
 <form [formGroup]="specForm" (ngSubmit)="onSpecSubmit()">
   <div class="input-group">
