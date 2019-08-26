@@ -43,7 +43,6 @@ namespace In.SwDoc.Generator
 
         public Stream ConvertJsonToPdf(string data)
         {
-
             var adocName = Guid.NewGuid().ToString("N");
             var pdfName = Guid.NewGuid().ToString("N");
             var adocPath = Path.Combine(_tempDirectory, adocName);

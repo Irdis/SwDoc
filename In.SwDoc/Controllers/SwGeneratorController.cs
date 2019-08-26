@@ -21,14 +21,14 @@ namespace In.SwDoc.Controllers
         }
 
         [HttpPost("url")]
-        public IActionResult GetDocument([FromBody]UrlForm data)
+        public IActionResult GetDocumentByUrl([FromBody]UrlForm data)
         {
             var generator = new DocGenerator();
             var request = WebRequest.Create(data.Url);
             request.Method = "GET";
             using (var responce = request.GetResponse())
             using (var stream = responce.GetResponseStream())
-            using (var reader= new StreamReader(stream))
+            using (var reader = new StreamReader(stream))
             {
                 var content = reader.ReadToEnd();
                 var d = generator.ConvertJsonToPdf(content);
@@ -38,6 +38,19 @@ namespace In.SwDoc.Controllers
                     id
                 });
             }
+        }
+
+        [HttpPost("spec")]
+        public IActionResult GetDocumentBySpec([FromBody]SpecForm data)
+        {
+            var generator = new DocGenerator();
+            var d = generator.ConvertJsonToPdf(data.Text);
+            var id = _storage.SaveDocument(d);
+            return Ok(new
+            {
+                id
+            });
+
         }
 
         [HttpGet("document/{id}")]
