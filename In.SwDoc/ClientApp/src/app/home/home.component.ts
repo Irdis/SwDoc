@@ -60,7 +60,8 @@ export class HomeComponent {
     this.http.post<GenerationResult>("api/sw-generator/url",
       JSON.stringify({
         url: this.urlForm.value.url
-      }), { headers: headers }).subscribe(result => {
+      }),
+      { headers: headers }).subscribe(result => {
         if (result.error !== null) {
           this.urlDocError = this.getErrorMessage(result.error);
         } else {
@@ -68,7 +69,13 @@ export class HomeComponent {
         }
         this.urlDocInProgress = false;
         this.urlForm.enable();
-    });
+      },
+      error => {
+        console.log('oops', error);
+        this.urlDocError = "Ooops... Something went wrong";
+        this.urlDocInProgress = false;
+        this.urlForm.enable();
+      });
   }
 
   getErrorMessage(errorCode) {
@@ -101,6 +108,12 @@ export class HomeComponent {
         }
         this.specDocInProgress = false;
         this.specForm.enable();
+    },
+    error => {
+      console.log('oops', error);
+      this.specDocError = "Ooops... Something went wrong";
+      this.specDocInProgress = false;
+      this.specForm.enable();
     });
   }
 }
