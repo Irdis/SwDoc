@@ -1,3 +1,4 @@
 export class GenerationResult {
-  id
+  id;
+  error;
 }

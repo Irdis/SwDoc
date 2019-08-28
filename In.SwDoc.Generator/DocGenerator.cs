@@ -8,6 +8,13 @@ using log4net.Repository.Hierarchy;
 
 namespace In.SwDoc.Generator
 {
+    public class DocumentGenerationException : Exception
+    {
+        public DocumentGenerationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
+
     public class DocGenerator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
@@ -30,23 +37,32 @@ namespace In.SwDoc.Generator
             var asciiName = Guid.NewGuid().ToString("N");
             var jsonPath = Path.Combine(_tempDirectory, jsonName);
             var asciiPath = Path.Combine(_tempDirectory, asciiName);
-            File.WriteAllText(jsonPath, data);
-
-            ConverJsonToAscii(jsonPath, asciiPath);
-
-            var memory = new MemoryStream();
-            var files = Directory.GetFiles(asciiPath);
-            foreach (var file in files)
+            try
             {
-                using (var stream = File.OpenRead(file))
+                File.WriteAllText(jsonPath, data);
+
+                ConverJsonToAscii(jsonPath, asciiPath);
+
+                var memory = new MemoryStream();
+                var files = Directory.GetFiles(asciiPath);
+                foreach (var file in files)
                 {
-                    stream.CopyTo(memory);
+                    using (var stream = File.OpenRead(file))
+                    {
+                        stream.CopyTo(memory);
+                    }
+                    memory.Write(_newLine, 0, _newLine.Length);
                 }
-                memory.Write(_newLine, 0, _newLine.Length);
+                Directory.Delete(asciiPath, true);
+                File.Delete(jsonPath);
+                memory.Position = 0;
+                return memory;
             }
-            Directory.Delete(asciiPath, true);
-            File.Delete(jsonPath);
-            return memory;
+            catch (Exception e)
+            {
+                _log.Error("Unable to generate ascii document", e);
+                throw new DocumentGenerationException("Unable to generate ascii document", e);
+            }
         }
 
         public Stream ConvertJsonToPdf(string data)
@@ -55,24 +71,36 @@ namespace In.SwDoc.Generator
             var pdfName = Guid.NewGuid().ToString("N");
             var adocPath = Path.Combine(_tempDirectory, adocName);
             var pdfPath = Path.Combine(_tempDirectory, pdfName);
-            using (var stream = ConvertJsonToAscii(data))
-            using (var file = File.Create(adocPath))
+            try
             {
-                stream.Position = 0;
-                stream.CopyTo(file);
+                using (var stream = ConvertJsonToAscii(data))
+                using (var file = File.Create(adocPath))
+                {
+                    stream.CopyTo(file);
+                }
+
+                ConverAsciiToPdf(adocPath, pdfPath);
+
+                File.Delete(adocPath);
+                var memory = new MemoryStream();
+                using (var pdf = File.OpenRead(pdfPath))
+                {
+                    pdf.CopyTo(memory);
+                }
+
+                File.Delete(pdfPath);
+                memory.Position = 0;
+                return memory;
             }
-
-            ConverAsciiToPdf(adocPath, pdfPath);
-
-            File.Delete(adocPath);
-            var memory = new MemoryStream();
-            using (var pdf = File.OpenRead(pdfPath))
+            catch (DocumentGenerationException)
             {
-                pdf.CopyTo(memory);
+                throw;
             }
-            File.Delete(pdfPath);
-            memory.Position = 0;
-            return memory;
+            catch (Exception e)
+            {
+                _log.Error("Unable to generate pdf document", e);
+                throw new DocumentGenerationException("Unable to generate ascii document", e);
+            }
         }
 
         public void ConverJsonToAscii(string jsonPath, string asciiPath)

@@ -6,4 +6,4 @@ var GenerationResult = /** @class */ (function () {
     return GenerationResult;
 }());
 exports.GenerationResult = GenerationResult;
-//# sourceMappingURL=generate-result.js.map
+//# sourceMappingURL=generation-result.js.map

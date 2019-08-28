@@ -7,22 +7,24 @@
   <div class="input-group">
     <input type="text" name="url" class="form-control" placeholder="https://petstore.swagger.io/v2/swagger.json" aria-label="Url" formControlName="url">
     <div class="input-group-append">
-      <input class="btn btn-outline-secondary" type="submit" value="Generate" />
+      <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="urlDocInProgress ? '' : null"/>
     </div>
   </div>
 </form>
 <div *ngIf="urlDocInProgress">Generating...</div>
+<div *ngIf="urlDocError" class="error">{{urlDocError}}</div>
 <a *ngIf="urlDocId" href="api/sw-generator/document/{{urlDocId}}" download>Download</a>
 
 <h2>Generate using json</h2>
 <p>Paste specification json:</p>
 <form [formGroup]="specForm" (ngSubmit)="onSpecSubmit()">
-  <div class="input-group">
+  <div class="input-group form-group-element">
     <textarea name="spec" class="form-control" aria-label="Spec" formControlName="text"></textarea>
   </div>
-  <div class="input-group">
-    <input class="btn btn-outline-secondary" type="submit" value="Generate" />
+  <div class="input-group form-group-element">
+    <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="specDocInProgress ? '' : null"/>
   </div>
 </form>
 <div *ngIf="specDocInProgress">Generating...</div>
+<div *ngIf="specDocError" class="error">{{specDocError}}</div>
 <a *ngIf="specDocId" href="api/sw-generator/document/{{specDocId}}" download>Download</a>
