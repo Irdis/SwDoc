@@ -23,14 +23,35 @@ export class HomeComponent {
     private http: HttpClient,
     private formBuilder: FormBuilder) {
     this.urlForm = this.formBuilder.group({
-      url:'https://petstore.swagger.io/v2/swagger.json'
+      url:''
     });
     this.specForm = this.formBuilder.group({
       text: ''
     });
   }
 
+  validateUrl() {
+    this.urlDocError = null;
+    if (this.urlForm.value.url == '') {
+      this.urlDocError = "Url cannot be empty";
+      return false;
+    }
+    return true;
+  }
+
+  validateSpec() {
+    this.specDocError = null;
+    if (this.specForm.value.text == '') {
+      this.specDocError = "Json cannot be empty";
+      return false;
+    }
+    return true;
+  }
+
   onUrlSubmit() {
+    if (!this.validateUrl()) {
+      return;
+    }
     this.urlForm.disable();
     this.urlDocId = null;
     this.urlDocError = null;
@@ -61,6 +82,9 @@ export class HomeComponent {
   }
 
   onSpecSubmit() {
+    if (!this.validateSpec()) {
+      return;
+    }
     this.specForm.disable();
     this.specDocId = null;
     this.specDocError = null;

@@ -1,16 +1,17 @@
 <h1>Swagger To Pdf</h1>
 
-<p>This site generates pdf documentation from a swagger json specification. It uses <a href="https://github.com/Swagger2Markup/swagger2markup-cli">Swagger2Markup</a> and <a href="https://asciidoctor.org/">Asciidoctor</a>.</p>
+<p>This site generates pdf documentation from a swagger json specification. It uses <a href="https://github.com/Swagger2Markup/swagger2markup-cli">Swagger2Markup</a> and <a href="https://asciidoctor.org/">Asciidoctor</a>. Let me know if you have any questions or comments. My email is <i>ivannovitskii@gmail.com</i>.</p>
 <h2>Generate using url</h2>
 <p>Paste url:</p>
 <form [formGroup]="urlForm" (ngSubmit)="onUrlSubmit()">
   <div class="input-group">
-    <input type="text" name="url" class="form-control" placeholder="https://petstore.swagger.io/v2/swagger.json" aria-label="Url" formControlName="url">
+    <input type="text" name="url" class="form-control" placeholder="" aria-label="Url" formControlName="url">
     <div class="input-group-append">
-      <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="urlDocInProgress ? '' : null"/>
+      <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="urlDocInProgress ? '' : null" />
     </div>
   </div>
 </form>
+<div class="suggestion">example: https://petstore.swagger.io/v2/swagger.json</div>
 <div *ngIf="urlDocInProgress">Generating...</div>
 <div *ngIf="urlDocError" class="error">{{urlDocError}}</div>
 <a *ngIf="urlDocId" href="api/sw-generator/document/{{urlDocId}}" download>Download</a>
@@ -22,7 +23,7 @@
     <textarea name="spec" class="form-control" aria-label="Spec" formControlName="text"></textarea>
   </div>
   <div class="input-group form-group-element">
-    <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="specDocInProgress ? '' : null"/>
+    <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="specDocInProgress ? '' : null" />
   </div>
 </form>
 <div *ngIf="specDocInProgress">Generating...</div>
