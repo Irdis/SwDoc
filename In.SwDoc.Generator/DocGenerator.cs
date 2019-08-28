@@ -11,9 +11,17 @@ namespace In.SwDoc.Generator
     public class DocGenerator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
-        private readonly string _swaggerCli = @"c:\Projects\swaggercli\swagger2markup-cli-1.3.3.jar";
-        private readonly string _tempDirectory = @"c:\Projects\swaggercli\temp";
+        private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-1.3.3.jar";
+        private readonly string _tempDirectory = @"..\swaggercli\temp";
         private readonly byte[] _newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
+
+        internal DocGenerator()
+        {
+            if (!Directory.Exists(_tempDirectory))
+            {
+                Directory.CreateDirectory(_tempDirectory);
+            }
+        }
 
         public Stream ConvertJsonToAscii(string data)
         {

@@ -14,16 +14,17 @@ namespace In.SwDoc.Controllers
     public class SwGeneratorController : Controller
     {
         private readonly DocumentStorage _storage;
+        private readonly DocGenerator _generator;
 
         public SwGeneratorController()
         {
             _storage = DocumentStorageFactory.Get();
+            _generator = DocGeneratorFactory.Get();
         }
 
         [HttpPost("url")]
         public IActionResult GetDocumentByUrl([FromBody]UrlForm data)
         {
-            var generator = new DocGenerator();
             var request = WebRequest.Create(data.Url);
             request.Method = "GET";
             using (var responce = request.GetResponse())
@@ -31,7 +32,7 @@ namespace In.SwDoc.Controllers
             using (var reader = new StreamReader(stream))
             {
                 var content = reader.ReadToEnd();
-                var d = generator.ConvertJsonToPdf(content);
+                var d = _generator.ConvertJsonToPdf(content);
                 var id = _storage.SaveDocument(d);
                 return Ok(new
                 {
@@ -43,8 +44,7 @@ namespace In.SwDoc.Controllers
         [HttpPost("spec")]
         public IActionResult GetDocumentBySpec([FromBody]SpecForm data)
         {
-            var generator = new DocGenerator();
-            var d = generator.ConvertJsonToPdf(data.Text);
+            var d = _generator.ConvertJsonToPdf(data.Text);
             var id = _storage.SaveDocument(d);
             return Ok(new
             {

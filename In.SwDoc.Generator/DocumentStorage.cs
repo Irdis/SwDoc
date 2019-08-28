@@ -6,7 +6,7 @@ namespace In.SwDoc.Generator
 {
     public class DocumentStorage
     {
-        private readonly string _docDirectory = @"c:\Projects\swaggercli\docs";
+        private readonly string _docDirectory = @"..\swaggercli\docs";
         private Timer _timer;
         public DocumentStorage()
         {

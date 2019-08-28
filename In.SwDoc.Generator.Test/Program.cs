@@ -13,7 +13,7 @@ namespace In.SwDoc.Generator.Test
         {
             ILoggerRepository repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
-            var generator = new DocGenerator();
+            var generator = DocGeneratorFactory.Get();
             var data = File.ReadAllText("test.json");
             var output = generator.ConvertJsonToPdf(data);
             Console.WriteLine(output);
