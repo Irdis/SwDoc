@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using log4net;
@@ -8,13 +11,6 @@ using log4net.Repository.Hierarchy;
 
 namespace In.SwDoc.Generator
 {
-    public class DocumentGenerationException : Exception
-    {
-        public DocumentGenerationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-    }
-
     public class DocGenerator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
@@ -44,7 +40,7 @@ namespace In.SwDoc.Generator
                 ConverJsonToAscii(jsonPath, asciiPath);
 
                 var memory = new MemoryStream();
-                var files = Directory.GetFiles(asciiPath);
+                var files = ReorderFiles(Directory.GetFiles(asciiPath));
                 foreach (var file in files)
                 {
                     using (var stream = File.OpenRead(file))
@@ -62,6 +58,28 @@ namespace In.SwDoc.Generator
             {
                 _log.Error("Unable to generate ascii document", e);
                 throw new DocumentGenerationException("Unable to generate ascii document", e);
+            }
+        }
+
+        private List<string> ReorderFiles(string[] files)
+        {
+            var result = new List<string>();
+            var dict = files.ToDictionary(Path.GetFileName, s => s);
+            ProcessFileItem("overview.adoc", dict, result);
+            ProcessFileItem("security.adoc", dict, result);
+            ProcessFileItem("paths.adoc", dict, result);
+            ProcessFileItem("definitions.adoc", dict, result);
+            result.AddRange(dict.Values);
+            return result;
+        }
+
+        private static void ProcessFileItem(string fileName, Dictionary<string, string> dict, List<string> result)
+        {
+            string path;
+            if (dict.TryGetValue(fileName, out path))
+            {
+                result.Add(path);
+                dict.Remove(fileName);
             }
         }
 
