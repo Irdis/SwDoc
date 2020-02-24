@@ -15,6 +15,7 @@ namespace In.SwDoc.Generator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
         private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-1.3.3.jar";
+        private readonly string _openApiCli = @"..\swaggercli\swagger2markup-cli-1.3.4-SNAPSHOT.jar";
         private readonly string _tempDirectory = @"..\swaggercli\temp";
         private readonly byte[] _newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
 
@@ -26,7 +27,7 @@ namespace In.SwDoc.Generator
             }
         }
 
-        public Stream ConvertJsonToAscii(string data)
+        public Stream ConvertJsonToAscii(string data, bool openApi)
         {
             _log.Info("Start converting to ascii doc");
             var jsonName = Guid.NewGuid().ToString("N");
@@ -37,7 +38,7 @@ namespace In.SwDoc.Generator
             {
                 File.WriteAllText(jsonPath, data);
 
-                ConverJsonToAscii(jsonPath, asciiPath);
+                ConverJsonToAscii(jsonPath, asciiPath, openApi);
 
                 var memory = new MemoryStream();
                 var files = ReorderFiles(Directory.GetFiles(asciiPath));
@@ -83,7 +84,7 @@ namespace In.SwDoc.Generator
             }
         }
 
-        public Stream ConvertJsonToPdf(string data)
+        public Stream ConvertJsonToPdf(string data, bool openApi)
         {
             var adocName = Guid.NewGuid().ToString("N");
             var pdfName = Guid.NewGuid().ToString("N");
@@ -91,7 +92,7 @@ namespace In.SwDoc.Generator
             var pdfPath = Path.Combine(_tempDirectory, pdfName);
             try
             {
-                using (var stream = ConvertJsonToAscii(data))
+                using (var stream = ConvertJsonToAscii(data, openApi))
                 using (var file = File.Create(adocPath))
                 {
                     stream.CopyTo(file);
@@ -121,9 +122,9 @@ namespace In.SwDoc.Generator
             }
         }
 
-        public void ConverJsonToAscii(string jsonPath, string asciiPath)
+        public void ConverJsonToAscii(string jsonPath, string asciiPath, bool openApi)
         {
-            var cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+            var cmd = $"/C java -jar \"{(openApi ? _openApiCli : _swaggerCli)}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
 
             var process = new Process();
             var startInfo = new ProcessStartInfo();

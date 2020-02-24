@@ -23,10 +23,12 @@ export class HomeComponent {
     private http: HttpClient,
     private formBuilder: FormBuilder) {
     this.urlForm = this.formBuilder.group({
-      url:''
+      url: '',
+      openApi: false
     });
     this.specForm = this.formBuilder.group({
-      text: ''
+      text: '',
+      openApi: false
     });
   }
 
@@ -59,7 +61,8 @@ export class HomeComponent {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     this.http.post<GenerationResult>("api/sw-generator/url",
       JSON.stringify({
-        url: this.urlForm.value.url
+        url: this.urlForm.value.url,
+        openApi: this.urlForm.value.openApi
       }),
       { headers: headers }).subscribe(result => {
         if (result.error !== null) {
@@ -99,7 +102,8 @@ export class HomeComponent {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     this.http.post<GenerationResult>("api/sw-generator/spec",
       JSON.stringify({
-        text: this.specForm.value.text
+        text: this.specForm.value.text,
+        openApi: this.specForm.value.openApi
       }), { headers: headers }).subscribe(result => {
         if (result.error !== null) {
           this.specDocError = this.getErrorMessage(result.error);

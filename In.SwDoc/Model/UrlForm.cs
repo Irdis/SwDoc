@@ -8,5 +8,6 @@ namespace In.SwDoc.Model
     public class UrlForm
     {
         public string Url { get; set; }
+        public bool OpenApi { get; set; }
     }
 }

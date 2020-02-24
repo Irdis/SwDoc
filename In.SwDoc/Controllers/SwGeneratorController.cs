@@ -36,7 +36,7 @@ namespace In.SwDoc.Controllers
                 using (var reader = new StreamReader(stream))
                 {
                     var content = reader.ReadToEnd();
-                    var d = _generator.ConvertJsonToPdf(content);
+                    var d = _generator.ConvertJsonToPdf(content, data.OpenApi);
                     var id = _storage.SaveDocument(d);
                     return Ok(new
                     {
@@ -77,7 +77,7 @@ namespace In.SwDoc.Controllers
         {
             try
             {
-                var d = _generator.ConvertJsonToPdf(data.Text);
+                var d = _generator.ConvertJsonToPdf(data.Text, data.OpenApi);
                 var id = _storage.SaveDocument(d);
                 return Ok(new
                 {
