@@ -14,8 +14,8 @@ namespace In.SwDoc.Generator
     public class DocGenerator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
-        private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-1.3.3.jar";
-        private readonly string _openApiCli = @"..\swaggercli\swagger2markup-cli-1.3.4-SNAPSHOT.jar";
+        private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-1.3.4-SNAPSHOT.jar";
+        private readonly string _swaggerCli2 = @"..\swaggercli\swagger2markup-cli2-1.3.4-SNAPSHOT.jar";
         private readonly string _tempDirectory = @"..\swaggercli\temp";
         private readonly byte[] _newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
 
@@ -124,7 +124,16 @@ namespace In.SwDoc.Generator
 
         public void ConverJsonToAscii(string jsonPath, string asciiPath, bool openApi)
         {
-            var cmd = $"/C java -jar \"{(openApi ? _openApiCli : _swaggerCli)}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+            string cmd;
+            if (openApi)
+            {
+                cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\" -v v3";
+            }
+            else
+            {
+
+                cmd = $"/C java -jar \"{_swaggerCli2}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+            }
 
             var process = new Process();
             var startInfo = new ProcessStartInfo();
