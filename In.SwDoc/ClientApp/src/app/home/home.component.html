@@ -1,6 +1,6 @@
 <h1>Swagger To Pdf</h1>
 
-<p>This site generates pdf documentation from a swagger json specification. It uses <a href="https://github.com/Swagger2Markup/swagger2markup-cli">Swagger2Markup</a> and <a href="https://asciidoctor.org/">Asciidoctor</a>. OpenAPI 3.0 is taken from a side branch and might produce uncertain results. Let me know if you have any questions or comments, my email is <i>ivannovitskii@gmail.com</i>.</p>
+<p>This site generates pdf documentation from a swagger json specification. It uses <a href="https://github.com/Swagger2Markup/swagger2markup-cli">Swagger2Markup</a> and <a href="https://asciidoctor.org/">Asciidoctor</a>. Let me know if you have any questions or comments, my email is <i>ivannovitskii@gmail.com</i>.</p>
 <h2>Generate using url</h2>
 <p>Paste url:</p>
 <form [formGroup]="urlForm" (ngSubmit)="onUrlSubmit()">
@@ -10,7 +10,7 @@
   <div class="suggestion">example: https://petstore.swagger.io/v2/swagger.json</div>
   <div class="custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" id="openApi1" [attr.disabled]="urlDocInProgress ? '' : null" formControlName="openApi">
-    <label class="custom-control-label" for="openApi1">OpenAPI 3.0 (experimental)</label>
+    <label class="custom-control-label" for="openApi1">OpenAPI 3.0</label>
   </div>
   <div class="input-group form-group-element">
     <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="urlDocInProgress ? '' : null" />
@@ -28,7 +28,7 @@
   </div>
   <div class="custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" id="openApi2" [attr.disabled]="specDocInProgress ? '' : null" formControlName="openApi">
-    <label class="custom-control-label" for="openApi2">OpenAPI 3.0 (experimental)</label>
+    <label class="custom-control-label" for="openApi2">OpenAPI 3.0</label>
   </div>
   <div class="input-group form-group-element">
     <input class="btn btn-outline-secondary" type="submit" value="Generate" [attr.disabled]="specDocInProgress ? '' : null" />

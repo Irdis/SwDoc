@@ -127,7 +127,7 @@ namespace In.SwDoc.Generator
             string cmd;
             if (openApi)
             {
-                cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\" -v v3";
+                cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
             }
             else
             {
