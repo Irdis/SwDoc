@@ -14,8 +14,8 @@ namespace In.SwDoc.Generator
     public class DocGenerator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
-        private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-1.3.4-SNAPSHOT.jar";
-        private readonly string _swaggerCli2 = @"..\swaggercli\swagger2markup-cli2-1.3.4-SNAPSHOT.jar";
+        private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-2.0.0-SNAPSHOT.jar";
+        private readonly string _swaggerCli2 = @"..\swaggercli\swagger2markup-cli2-2.0.0-SNAPSHOT.jar";
         private readonly string _tempDirectory = @"..\swaggercli\temp";
         private readonly byte[] _newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
 
