@@ -127,12 +127,12 @@ namespace In.SwDoc.Generator
             string cmd;
             if (openApi)
             {
-                cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+                cmd = $"/C java --add-opens java.base/java.lang=ALL-UNNAMED -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
             }
             else
             {
 
-                cmd = $"/C java -jar \"{_swaggerCli2}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+                cmd = $"/C java --add-opens java.base/java.lang=ALL-UNNAMED -jar \"{_swaggerCli2}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
             }
 
             var process = new Process();
@@ -148,7 +148,7 @@ namespace In.SwDoc.Generator
 
         public void ConverAsciiToPdf(string asciiPath, string pdfPath)
         {
-            var cmd = $"/C asciidoctor-pdf -o \"{pdfPath}\" \"{asciiPath}\"";
+            var cmd = $"/C asciidoctor-pdf -a scripts=cjk -a pdf-theme=default-with-fallback-font -o \"{pdfPath}\" \"{asciiPath}\"";
 
             var process = new Process();
             var startInfo = new ProcessStartInfo();
