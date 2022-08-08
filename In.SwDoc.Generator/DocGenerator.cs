@@ -148,7 +148,7 @@ namespace In.SwDoc.Generator
 
         public void ConverAsciiToPdf(string asciiPath, string pdfPath)
         {
-            var cmd = $"/C asciidoctor-pdf -a scripts=cjk -a pdf-theme=default-with-fallback-font -o \"{pdfPath}\" \"{asciiPath}\"";
+            var cmd = $"/C asciidoctor-pdf r asciidoctor-pdf-cjk-kai_gen_gothic -a pdf-style=\"KaiGenGothicKR\" -o \"{pdfPath}\" \"{asciiPath}\"";
 
             var process = new Process();
             var startInfo = new ProcessStartInfo();
