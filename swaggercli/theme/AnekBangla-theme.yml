@@ -1,0 +1,20 @@
+extends: default
+font:
+  catalog:
+    merge: true
+    Anek Bangla KR:
+      normal: AnekBangla-Regular.ttf
+      italic: AnekBangla-Thin.ttf
+      bold: AnekBangla-Bold.ttf
+      bold_italic: AnekBangla-Bold.ttf
+  fallbacks:
+  - Noto Serif
+base:
+  text-align: left
+  font-family: Anek Bangla KR
+codespan:
+  font-family: $codespan-font-family
+kbd:
+  font-family: $codespan-font-family
+code:
+  font-family: $codespan-font-family

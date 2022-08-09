@@ -1,0 +1,20 @@
+extends: default
+font:
+  catalog:
+    merge: true
+    Cairo:
+      normal: Cairo-Regular.ttf
+      italic: Cairo-Light.ttf
+      bold: Cairo-Bold.ttf
+      bold_italic: Cairo-Bold.ttf
+  fallbacks:
+  - Noto Serif
+base:
+  text-align: left
+  font-family: Cairo
+codespan:
+  font-family: $codespan-font-family
+kbd:
+  font-family: $codespan-font-family
+code:
+  font-family: $codespan-font-family

@@ -1,0 +1,20 @@
+extends: default
+font:
+  catalog:
+    merge: true
+    Noto Sans HK:
+      normal: NotoSansHK-Regular.otf
+      italic: NotoSansHK-Thin.otf
+      bold: NotoSansHK-Bold.otf
+      bold_italic: NotoSansHK-Bold.otf
+  fallbacks:
+  - Noto Serif
+base:
+  text-align: left
+  font-family: Noto Sans HK
+codespan:
+  font-family: $codespan-font-family
+kbd:
+  font-family: $codespan-font-family
+code:
+  font-family: $codespan-font-family

@@ -4,5 +4,6 @@
     {
         public string Text { get; set; }
         public bool OpenApi { get; set; }
+        public string Font { get; set; }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using log4net;
-using log4net.Repository.Hierarchy;
 
 namespace In.SwDoc.Generator
 {
@@ -17,6 +14,8 @@ namespace In.SwDoc.Generator
         private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-2.0.0-SNAPSHOT.jar";
         private readonly string _swaggerCli2 = @"..\swaggercli\swagger2markup-cli2-2.0.0-SNAPSHOT.jar";
         private readonly string _tempDirectory = @"..\swaggercli\temp";
+        private readonly string _themeDirectory = @"..\swaggercli\theme";
+        private readonly string _fontsDirectory = @"..\swaggercli\theme\fonts";
         private readonly byte[] _newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
 
         internal DocGenerator()
@@ -84,7 +83,7 @@ namespace In.SwDoc.Generator
             }
         }
 
-        public Stream ConvertJsonToPdf(string data, bool openApi)
+        public Stream ConvertJsonToPdf(string data, bool openApi, string font)
         {
             var adocName = Guid.NewGuid().ToString("N");
             var pdfName = Guid.NewGuid().ToString("N");
@@ -98,7 +97,7 @@ namespace In.SwDoc.Generator
                     stream.CopyTo(file);
                 }
 
-                ConverAsciiToPdf(adocPath, pdfPath);
+                ConverAsciiToPdf(adocPath, pdfPath, font);
 
                 File.Delete(adocPath);
                 var memory = new MemoryStream();
@@ -122,17 +121,17 @@ namespace In.SwDoc.Generator
             }
         }
 
-        public void ConverJsonToAscii(string jsonPath, string asciiPath, bool openApi)
+        private void ConverJsonToAscii(string jsonPath, string asciiPath, bool openApi)
         {
             string cmd;
             if (openApi)
             {
-                cmd = $"/C java --add-opens java.base/java.lang=ALL-UNNAMED -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+                cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
             }
             else
             {
 
-                cmd = $"/C java --add-opens java.base/java.lang=ALL-UNNAMED -jar \"{_swaggerCli2}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+                cmd = $"/C java -jar \"{_swaggerCli2}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
             }
 
             var process = new Process();
@@ -146,9 +145,9 @@ namespace In.SwDoc.Generator
         }
 
 
-        public void ConverAsciiToPdf(string asciiPath, string pdfPath)
+        private void ConverAsciiToPdf(string asciiPath, string pdfPath, string font)
         {
-            var cmd = $"/C asciidoctor-pdf r asciidoctor-pdf-cjk-kai_gen_gothic -a pdf-style=\"KaiGenGothicKR\" -o \"{pdfPath}\" \"{asciiPath}\"";
+            var cmd = CreateAsciidoctorPdfCmd(asciiPath, pdfPath, font);
 
             var process = new Process();
             var startInfo = new ProcessStartInfo();
@@ -158,6 +157,17 @@ namespace In.SwDoc.Generator
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
+        }
+
+        private string CreateAsciidoctorPdfCmd(string asciiPath, string pdfPath, string font)
+        {
+            if (string.IsNullOrEmpty(font))
+            {
+                return $"/C asciidoctor-pdf -o \"{pdfPath}\" \"{asciiPath}\"";
+            }
+
+            return
+                $"/C asciidoctor-pdf -a scripts=cjk -a pdf-theme={_themeDirectory}\\{font}-theme.yml -a pdf-fontsdir={_fontsDirectory} -o \"{pdfPath}\" \"{asciiPath}\"";
         }
     }
 }

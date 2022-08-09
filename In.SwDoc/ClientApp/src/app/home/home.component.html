@@ -7,7 +7,7 @@
   <div class="input-group form-group-element">
     <input type="text" name="url" class="form-control" placeholder="" aria-label="Url" formControlName="url">
   </div>
-  <div class="suggestion">example: https://petstore.swagger.io/v2/swagger.json</div>
+  <div class="suggestion">example: https://petstore.swagger.io/v2/swagger.json </div>
   <div class="custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" id="openApi1" [attr.disabled]="urlDocInProgress ? '' : null" formControlName="openApi">
     <label class="custom-control-label" for="openApi1">OpenAPI 3.0</label>
@@ -37,3 +37,13 @@
 <div *ngIf="specDocInProgress">Generating...</div>
 <div *ngIf="specDocError" class="error">{{specDocError}}</div>
 <a *ngIf="specDocId" href="api/sw-generator/document/{{specDocId}}" download>Download</a>
+
+<h4>Custom fonts</h4>
+<p>If your language consists of funny characters and pdf doesn't display them correctly try using different font</p>
+<select class="custom-select" [(ngModel)]="selectedFontId">
+  <option value="0">Select Font...</option>
+  <option *ngFor="let font of fontList"
+          [value]="font.id">
+    {{ font.name }} ({{font.lang}})
+  </option>
+</select>

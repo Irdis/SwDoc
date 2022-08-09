@@ -19,6 +19,17 @@ export class HomeComponent {
   specDocId;
   specDocError;
   specDocInProgress;
+
+  selectedFontId: string = '0';
+  fontList: Array<any> = [
+    { id: 1, name: "Cairo", lang: "Arabic"},
+    { id: 2, name: "AnekBangla", lang: "Bengali"},
+    { id: 3, name: "NotoSansHK", lang: "Chinese"},
+    { id: 4, name: "Poppins", lang: "Devanagari"},
+    { id: 5, name: "NotoSansJP", lang: "Japanese"},
+    { id: 6, name: "NotoSansKR", lang: "Korean"}
+  ];
+
   constructor(
     private http: HttpClient,
     private formBuilder: FormBuilder) {
@@ -50,7 +61,7 @@ export class HomeComponent {
     return true;
   }
 
-  onUrlSubmit() {
+  onUrlSubmit(): void {
     if (!this.validateUrl()) {
       return;
     }
@@ -62,7 +73,8 @@ export class HomeComponent {
     this.http.post<GenerationResult>("api/sw-generator/url",
       JSON.stringify({
         url: this.urlForm.value.url,
-        openApi: this.urlForm.value.openApi
+        openApi: this.urlForm.value.openApi,
+        font: this.getFontName()
       }),
       { headers: headers }).subscribe(result => {
         if (result.error !== null) {
@@ -81,7 +93,7 @@ export class HomeComponent {
       });
   }
 
-  getErrorMessage(errorCode) {
+  getErrorMessage(errorCode): string {
     if (errorCode === "WebException") {
       return "Unable to reach web site";
     } else if (errorCode === "GenerationError") {
@@ -91,7 +103,14 @@ export class HomeComponent {
     }
   }
 
-  onSpecSubmit() {
+  getFontName(): string {
+    if (this.selectedFontId === '0') {
+      return undefined;
+    }
+    return this.fontList.filter(f => f.id === +this.selectedFontId)[0].name;
+  }
+
+  onSpecSubmit(): void {
     if (!this.validateSpec()) {
       return;
     }
@@ -103,7 +122,8 @@ export class HomeComponent {
     this.http.post<GenerationResult>("api/sw-generator/spec",
       JSON.stringify({
         text: this.specForm.value.text,
-        openApi: this.specForm.value.openApi
+        openApi: this.specForm.value.openApi,
+        font: this.getFontName()
       }), { headers: headers }).subscribe(result => {
         if (result.error !== null) {
           this.specDocError = this.getErrorMessage(result.error);

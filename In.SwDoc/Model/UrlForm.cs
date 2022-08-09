@@ -9,5 +9,6 @@ namespace In.SwDoc.Model
     {
         public string Url { get; set; }
         public bool OpenApi { get; set; }
+        public string Font { get; set; }
     }
 }

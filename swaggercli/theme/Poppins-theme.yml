@@ -1,0 +1,20 @@
+extends: default
+font:
+  catalog:
+    merge: true
+    Poppins:
+      normal: Poppins-Regular.ttf
+      italic: Poppins-Italic.ttf
+      bold: Poppins-Bold.ttf
+      bold_italic: Poppins-BoldItalic.ttf
+  fallbacks:
+  - Noto Serif
+base:
+  text-align: left
+  font-family: Poppins
+codespan:
+  font-family: $codespan-font-family
+kbd:
+  font-family: $codespan-font-family
+code:
+  font-family: $codespan-font-family
