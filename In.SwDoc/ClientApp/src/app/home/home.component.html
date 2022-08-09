@@ -39,7 +39,7 @@
 <a *ngIf="specDocId" href="api/sw-generator/document/{{specDocId}}" download>Download</a>
 
 <h4>Custom fonts</h4>
-<p>If your language consists of funny characters and pdf doesn't display them correctly try using different font</p>
+<p>If your language consists of funny characters and pdf doesn't display them correctly, try using different font</p>
 <select class="custom-select" [(ngModel)]="selectedFontId">
   <option value="0">Select Font...</option>
   <option *ngFor="let font of fontList"
