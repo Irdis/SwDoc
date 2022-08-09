@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using In.SwDoc.Generator;
 using In.SwDoc.Model;
 using log4net;
@@ -15,13 +12,13 @@ namespace In.SwDoc.Controllers
     public class SwGeneratorController : Controller
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
-        private readonly DocumentStorage _storage;
-        private readonly DocGenerator _generator;
+        private readonly IDocumentStorage _storage;
+        private readonly IDocGenerator _generator;
 
-        public SwGeneratorController()
+        public SwGeneratorController(IDocumentStorage storage, IDocGenerator generator)
         {
-            _storage = DocumentStorageFactory.Get();
-            _generator = DocGeneratorFactory.Get();
+            _storage = storage;
+            _generator = generator;
         }
 
         [HttpPost("url")]

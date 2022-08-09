@@ -5,10 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using log4net;
+using Microsoft.Extensions.Configuration;
 
 namespace In.SwDoc.Generator
 {
-    public class DocGenerator
+    public class DocGenerator : IDocGenerator
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(DocGenerator));
         private readonly string _swaggerCli = @"..\swaggercli\swagger2markup-cli-2.0.0-SNAPSHOT.jar";
@@ -17,16 +18,19 @@ namespace In.SwDoc.Generator
         private readonly string _themeDirectory = @"..\swaggercli\theme";
         private readonly string _fontsDirectory = @"..\swaggercli\theme\fonts";
         private readonly byte[] _newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
+        private readonly string _jvmParams;
 
-        internal DocGenerator()
+        public DocGenerator(IConfiguration config)
         {
             if (!Directory.Exists(_tempDirectory))
             {
                 Directory.CreateDirectory(_tempDirectory);
             }
+
+            _jvmParams = config.GetValue<string>("JvmParams");
         }
 
-        public Stream ConvertJsonToAscii(string data, bool openApi)
+        private Stream ConvertJsonToAscii(string data, bool openApi)
         {
             _log.Info("Start converting to ascii doc");
             var jsonName = Guid.NewGuid().ToString("N");
@@ -123,17 +127,8 @@ namespace In.SwDoc.Generator
 
         private void ConverJsonToAscii(string jsonPath, string asciiPath, bool openApi)
         {
-            string cmd;
-            if (openApi)
-            {
-                cmd = $"/C java -jar \"{_swaggerCli}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
-            }
-            else
-            {
-
-                cmd = $"/C java -jar \"{_swaggerCli2}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
-            }
-
+            var cmd = $"/C java {_jvmParams} -jar \"{(openApi ? _swaggerCli : _swaggerCli2)}\" convert -i \"{jsonPath}\" -d \"{asciiPath}\"";
+            
             var process = new Process();
             var startInfo = new ProcessStartInfo();
             //startInfo.WindowStyle = ProcessWindowStyle.Hidden;

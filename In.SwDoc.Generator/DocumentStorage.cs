@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace In.SwDoc.Generator
 {
-    public class DocumentStorage
+    public class DocumentStorage : IDocumentStorage
     {
         private readonly string _docDirectory = @"..\swaggercli\docs";
         private Timer _timer;
