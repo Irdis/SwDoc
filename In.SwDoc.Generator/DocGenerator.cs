@@ -87,7 +87,7 @@ namespace In.SwDoc.Generator
             }
         }
 
-        public Stream ConvertJsonToPdf(string data, bool openApi, string font)
+        public Stream ConvertJsonToPdf(string data, bool openApi, AsciiFont? font)
         {
             var adocName = Guid.NewGuid().ToString("N");
             var pdfName = Guid.NewGuid().ToString("N");
@@ -140,7 +140,7 @@ namespace In.SwDoc.Generator
         }
 
 
-        private void ConverAsciiToPdf(string asciiPath, string pdfPath, string font)
+        private void ConverAsciiToPdf(string asciiPath, string pdfPath, AsciiFont? font)
         {
             var cmd = CreateAsciidoctorPdfCmd(asciiPath, pdfPath, font);
 
@@ -154,9 +154,9 @@ namespace In.SwDoc.Generator
             process.WaitForExit();
         }
 
-        private string CreateAsciidoctorPdfCmd(string asciiPath, string pdfPath, string font)
+        private string CreateAsciidoctorPdfCmd(string asciiPath, string pdfPath, AsciiFont? font)
         {
-            if (string.IsNullOrEmpty(font))
+            if (!font.HasValue)
             {
                 return $"/C asciidoctor-pdf -o \"{pdfPath}\" \"{asciiPath}\"";
             }

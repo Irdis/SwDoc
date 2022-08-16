@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using In.SwDoc.Generator;
 
 namespace In.SwDoc.Model
 {
@@ -9,6 +6,6 @@ namespace In.SwDoc.Model
     {
         public string Url { get; set; }
         public bool OpenApi { get; set; }
-        public string Font { get; set; }
+        public AsciiFont? Font { get; set; }
     }
 }
