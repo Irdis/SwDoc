@@ -21,14 +21,7 @@ export class HomeComponent {
   specDocInProgress;
 
   selectedFontId: string = '0';
-  fontList: Array<any> = [
-    { id: 1, name: "Cairo", lang: "Arabic"},
-    { id: 2, name: "AnekBangla", lang: "Bengali"},
-    { id: 3, name: "NotoSansHK", lang: "Chinese"},
-    { id: 4, name: "Poppins", lang: "Devanagari"},
-    { id: 5, name: "NotoSansJP", lang: "Japanese"},
-    { id: 6, name: "NotoSansKR", lang: "Korean"}
-  ];
+  fontList: Array<any> = HomeComponent.constructFonts();
 
   constructor(
     private http: HttpClient,
@@ -41,6 +34,19 @@ export class HomeComponent {
       text: '',
       openApi: false
     });
+  }
+
+  static constructFonts() {
+    var iota = 1;
+    return [
+      { id: iota++, name: "Cairo", lang: "Arabic" },
+      { id: iota++, name: "AnekBangla", lang: "Bengali" },
+      { id: iota++, name: "NotoSansHK", lang: "Chinese" },
+      { id: iota++, name: "SourceHanSansHWSC", lang: "Chinese" },
+      { id: iota++, name: "Poppins", lang: "Devanagari" },
+      { id: iota++, name: "NotoSansJP", lang: "Japanese" },
+      { id: iota++, name: "NotoSansKR", lang: "Korean" },
+    ]
   }
 
   validateUrl() {

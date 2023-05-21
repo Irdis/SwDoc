@@ -5,6 +5,7 @@ namespace In.SwDoc.Generator
         AnekBangla,
         Cairo,
         NotoSansHK,
+        SourceHanSansHWSC,
         NotoSansJP,
         NotoSansKR,
         Poppins,
